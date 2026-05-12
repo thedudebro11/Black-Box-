@@ -1,10 +1,14 @@
-import { Zap, ArrowRight } from 'lucide-react'
+import { useState } from 'react'
+import { Zap, ArrowRight, FlaskConical } from 'lucide-react'
 import { useStore } from '../store'
+import DevScenarioPicker from '../components/DevScenarioPicker'
 
 export default function Welcome() {
   const navigate = useStore((s) => s.navigate)
+  const [showScenarioPicker, setShowScenarioPicker] = useState(false)
 
   return (
+    <>
     <div className="flex flex-col items-center justify-center h-full min-h-screen px-8 py-16">
       <div className="w-full max-w-lg">
         {/* Logo mark */}
@@ -30,19 +34,42 @@ export default function Welcome() {
         {/* CTA */}
         <button
           onClick={() => navigate('describe')}
-          className="flex items-center gap-2 bg-accent hover:bg-accent/90 text-white font-medium px-6 py-3 rounded transition-colors"
+          className="flex items-center gap-2 bg-accent hover:bg-accent/90 text-white font-medium px-6 py-3 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-accent/50"
+          autoFocus
         >
           Start a New Session
           <ArrowRight size={16} />
         </button>
 
-        {/* Phase note */}
-        <div className="mt-12 pt-6 border-t border-app-border">
-          <p className="text-xs text-secondary font-mono">
-            PHASE 1 PLACEHOLDER — will contain app name, one-line description, and Start button
-          </p>
+        {/* Dev-mode scenario tester */}
+        {import.meta.env.DEV && (
+          <button
+            onClick={() => setShowScenarioPicker(true)}
+            className="mt-6 flex items-center gap-1.5 text-xs text-secondary/60 hover:text-secondary transition-colors focus:outline-none"
+          >
+            <FlaskConical size={12} />
+            Test Scenarios (dev)
+          </button>
+        )}
+
+        {/* Feature list */}
+        <div className="mt-12 pt-6 border-t border-app-border space-y-2">
+          {[
+            'Records system events during the problem',
+            'Correlates signals against known crash patterns',
+            'Tells you the cause with evidence — not a guess',
+          ].map((line) => (
+            <div key={line} className="flex items-start gap-2.5">
+              <span className="w-1 h-1 rounded-full bg-accent/60 mt-2 flex-shrink-0" />
+              <p className="text-secondary text-sm">{line}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
+    {showScenarioPicker && (
+      <DevScenarioPicker onClose={() => setShowScenarioPicker(false)} />
+    )}
+    </>
   )
 }

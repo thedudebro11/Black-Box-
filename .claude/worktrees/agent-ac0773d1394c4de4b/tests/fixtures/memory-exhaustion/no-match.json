@@ -1,0 +1,60 @@
+{
+  "_fixture_source": "synthetic",
+  "_fixture_notes": "RAM stays below 85% throughout — rule must not fire",
+  "id": "fixture-memexhaust-nomatch-001",
+  "issue_type": "crash",
+  "app_name": "LightweightGame.exe",
+  "started_at": "2024-01-18T10:00:00.000Z",
+  "stopped_at": "2024-01-18T10:06:00.000Z",
+  "issue_marker_at": "2024-01-18T10:05:30.000Z",
+  "windows": {
+    "baseline_start": "2024-01-18T10:00:00.000Z",
+    "baseline_end":   "2024-01-18T10:04:30.000Z",
+    "incident_start": "2024-01-18T10:04:30.000Z",
+    "incident_end":   "2024-01-18T10:05:30.000Z",
+    "aftermath_start":"2024-01-18T10:05:30.000Z",
+    "aftermath_end":  "2024-01-18T10:07:30.000Z"
+  },
+  "events": [
+    {
+      "type": "event",
+      "ts": "2024-01-18T10:05:20.000Z",
+      "source": "Application",
+      "provider": "Application Error",
+      "event_id": 1000,
+      "level": "Error",
+      "message": "Faulting application name: LightweightGame.exe, faulting module: game_graphics.dll, exception code: 0xc0000005",
+      "collected_at": "2024-01-18T10:05:45.000Z"
+    }
+  ],
+  "processes": [
+    {
+      "name": "LightweightGame.exe",
+      "pid": 4400,
+      "cpu_pct": 30.0,
+      "memory_mb": 2000,
+      "first_seen": "2024-01-18T10:01:00.000Z",
+      "last_seen":  "2024-01-18T10:05:22.000Z",
+      "exit_detected": true
+    }
+  ],
+  "metrics": [
+    {
+      "ts": "2024-01-18T10:05:00.000Z",
+      "cpu_pct": 35.0,
+      "ram_used_mb": 6000,
+      "ram_total_mb": 16384,
+      "ram_pct": 36.6,
+      "disk_latency_ms": 5,
+      "gpu_pct": 45.0,
+      "vram_used_mb": 3000,
+      "vram_total_mb": 8192
+    }
+  ],
+  "hardware": {
+    "gpu_model": "NVIDIA GeForce GTX 1660",
+    "gpu_driver_version": "528.24",
+    "os_version": "Windows 10 22H2",
+    "ram_total_mb": 16384
+  }
+}

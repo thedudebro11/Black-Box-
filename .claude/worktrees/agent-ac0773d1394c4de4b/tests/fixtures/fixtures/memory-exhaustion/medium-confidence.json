@@ -1,0 +1,71 @@
+{
+  "_fixture_source": "synthetic",
+  "_fixture_notes": "Event 2004 present but RAM not sustained above 90% across 3 samples = MEDIUM confidence",
+  "id": "fixture-memexhaust-medium-001",
+  "issue_type": "crash",
+  "app_name": "OpenWorldGame.exe",
+  "started_at": "2024-01-18T09:00:00.000Z",
+  "stopped_at": "2024-01-18T09:06:00.000Z",
+  "issue_marker_at": "2024-01-18T09:05:30.000Z",
+  "windows": {
+    "baseline_start": "2024-01-18T09:00:00.000Z",
+    "baseline_end":   "2024-01-18T09:04:30.000Z",
+    "incident_start": "2024-01-18T09:04:30.000Z",
+    "incident_end":   "2024-01-18T09:05:30.000Z",
+    "aftermath_start":"2024-01-18T09:05:30.000Z",
+    "aftermath_end":  "2024-01-18T09:07:30.000Z"
+  },
+  "events": [
+    {
+      "type": "event",
+      "ts": "2024-01-18T09:05:15.000Z",
+      "source": "System",
+      "provider": "Microsoft-Windows-Resource-Exhaustion-Detector",
+      "event_id": 2004,
+      "level": "Error",
+      "message": "Windows successfully diagnosed a low virtual memory condition. The following programs consumed the most virtual memory: OpenWorldGame.exe (9800 MB).",
+      "collected_at": "2024-01-18T09:05:45.000Z"
+    }
+  ],
+  "processes": [
+    {
+      "name": "OpenWorldGame.exe",
+      "pid": 8200,
+      "cpu_pct": 60.0,
+      "memory_mb": 9500,
+      "first_seen": "2024-01-18T09:01:00.000Z",
+      "last_seen":  "2024-01-18T09:05:25.000Z",
+      "exit_detected": true
+    }
+  ],
+  "metrics": [
+    {
+      "ts": "2024-01-18T09:05:00.000Z",
+      "cpu_pct": 68.0,
+      "ram_used_mb": 13800,
+      "ram_total_mb": 16384,
+      "ram_pct": 84.2,
+      "disk_latency_ms": 20,
+      "gpu_pct": 70.0,
+      "vram_used_mb": 5500,
+      "vram_total_mb": 8192
+    },
+    {
+      "ts": "2024-01-18T09:05:20.000Z",
+      "cpu_pct": 70.0,
+      "ram_used_mb": 14200,
+      "ram_total_mb": 16384,
+      "ram_pct": 86.7,
+      "disk_latency_ms": 22,
+      "gpu_pct": 69.0,
+      "vram_used_mb": 5500,
+      "vram_total_mb": 8192
+    }
+  ],
+  "hardware": {
+    "gpu_model": "NVIDIA GeForce RTX 3060 Ti",
+    "gpu_driver_version": "531.41",
+    "os_version": "Windows 10 22H2",
+    "ram_total_mb": 16384
+  }
+}

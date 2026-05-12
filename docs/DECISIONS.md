@@ -172,13 +172,139 @@ comparison. Ranking logic uses the fixed order: HIGH > MEDIUM > LOW.
 
 ## OPEN DECISIONS
 
-Issues that have not yet been resolved. Each must be resolved before
-the relevant phase begins.
+All open decisions resolved as of 2026-05-11.
 
 | ID | Question | Relevant Phase | Status |
 |----|----------|---------------|--------|
-| OD-001 | What GPU metrics library to use — systeminformation vs node-gpu-info vs PowerShell? | Phase 3 | OPEN |
-| OD-002 | How to handle sessions where PowerShell execution is blocked by security policy? | Phase 3 | OPEN |
-| OD-003 | Should trace files be compressed after analysis completes? | Phase 5 | OPEN |
-| OD-004 | Maximum trace file size limit before truncation? | Phase 5 | OPEN |
-| OD-005 | Should the Results screen support printing? | Phase 7 | OPEN |
+| OD-001 | What GPU metrics library to use — systeminformation vs node-gpu-info vs PowerShell? | Phase 3 | RESOLVED → ADR-011 |
+| OD-002 | How to handle sessions where PowerShell execution is blocked by security policy? | Phase 3 | RESOLVED → ADR-012 |
+| OD-003 | Should trace files be compressed after analysis completes? | Phase 5 | RESOLVED → ADR-013 |
+| OD-004 | Maximum trace file size limit before truncation? | Phase 5 | RESOLVED → ADR-014 |
+| OD-005 | Should the Results screen support printing? | Phase 7 | RESOLVED → ADR-015 |
+
+---
+
+## ADR-011 — GPU Metrics via systeminformation
+
+**Decision:** Use the `systeminformation` npm package for GPU utilization,
+VRAM used, and VRAM total during recording sessions.
+
+**Reason:** `systeminformation` supports both NVIDIA and AMD GPUs, returns
+structured typed data, is actively maintained, and requires no PowerShell
+invocation for metrics — reducing the number of child_process calls during
+recording. `node-gpu-info` is less maintained. Raw PowerShell via
+`Get-WmiObject` does not expose real-time utilization data reliably.
+
+**Implications:** Add `systeminformation` to production dependencies in Phase 3.
+GPU data is accessed via `si.graphics()` which returns controller array.
+Use `controllers[0]` as the primary GPU. If `utilizationGpu` is undefined
+(some drivers don't expose it), log a warning and record `gpu_pct: null`
+rather than crashing.
+
+---
+
+## ADR-012 — wevtutil.exe as Primary Event Log Reader
+
+**Decision:** Windows Event Log is queried using `wevtutil.exe`, a built-in
+Windows system executable, not a PowerShell script. PowerShell is retained
+only for the process list and hardware profile collectors.
+
+**Reason:** `wevtutil.exe` ships on every Windows install since Vista and
+lives at `%SystemRoot%\System32\wevtutil.exe`. It is a plain Win32 executable
+invoked via `child_process.spawn` — completely outside PowerShell's execution
+policy. Group Policy restrictions on PowerShell script execution have zero
+effect on it. This means the most critical collector (Event Log) works on
+every Windows machine regardless of security policy.
+
+**Implementation:**
+
+Event log collection uses two `wevtutil` invocations (System log and
+Application log) with XPath filters for the specific event IDs needed:
+
+```
+wevtutil qe System
+  /q:"*[System[(EventID=153 or EventID=14 or EventID=13 or EventID=4101
+        or EventID=141 or EventID=1001 or EventID=2004 or EventID=1)
+        and TimeCreated[@SystemTime>='<ISO_START>']]]"
+  /f:XML /rd:true /c:500
+
+wevtutil qe Application
+  /q:"*[System[(EventID=1000 or EventID=1002)
+        and TimeCreated[@SystemTime>='<ISO_START>']]]"
+  /f:XML /rd:true /c:500
+```
+
+Output is XML, parsed using `fast-xml-parser` (lightweight, no native deps).
+The parser extracts: Provider Name, EventID, Level, TimeCreated, Channel, and
+the first EventData/Data element as the message.
+
+Level integer mapping: 1=Critical, 2=Error, 3=Warning, 4=Information.
+
+**PowerShell scope (reduced):** PowerShell is only used for:
+- `get-processes.ps1` — process list with CPU% and memory
+- `get-system-info.ps1` — hardware profile (GPU model, driver, OS, RAM)
+
+These use `powershell.exe -ExecutionPolicy Bypass -Command "..."` (inline
+command, not `-File`) as an additional resilience layer — some GPO
+configurations block `.ps1` files but allow inline `-Command` execution.
+
+**Fallback if process/hardware PowerShell is still blocked:**
+Return partial data — `HardwareProfile` fields default to `null`, process
+list returns `[]`. The rules engine handles null hardware gracefully.
+Event log data is always available via wevtutil regardless.
+
+**Implications:**
+- Add `fast-xml-parser` to production dependencies in Phase 3
+- `scripts/powershell/get-events.ps1` is no longer needed — delete it
+- `src/collectors/wevtutil.ts` replaces the PowerShell runner for events
+- The "execution_policy_blocked" error path only applies to process/hardware
+  collectors now, not event log collection
+
+---
+
+## ADR-013 — No Trace File Compression in V1
+
+**Decision:** Trace files are stored as plain NDJSON after analysis completes.
+No gzip compression in V1.
+
+**Reason:** A 10-minute recording session generates approximately 1–2MB of
+trace data. Storage cost is negligible. Keeping files uncompressed means
+they are readable in any text editor, useful for debugging, and require
+no decompression step before analysis. Compression adds complexity with
+no meaningful benefit at V1 scale.
+
+**Implications:** Trace files stay in `%APPDATA%/black-box/traces/` as `.ndjson`
+files indefinitely until the user deletes a session. Session delete in Phase 11
+must also delete the corresponding trace file.
+
+---
+
+## ADR-014 — 50MB Maximum Trace File Size
+
+**Decision:** Cap trace file writes at 50MB. If a write would push the file
+past this limit, stop appending and set `trace_truncated: true` on the session
+record in the database.
+
+**Reason:** In normal use a 30-minute session produces well under 10MB.
+The 50MB cap is a safety valve for pathological edge cases (extremely long
+sessions, very high metric sampling rate). The cap prevents disk exhaustion
+without affecting any realistic use case.
+
+**Implications:** Add a `trace_truncated` boolean column to the `sessions`
+table in the Phase 2 migration. The analysis pipeline reads this flag and
+includes it in the inconclusive reason if truncation occurred:
+"Session trace was truncated due to size — analysis may be incomplete."
+
+---
+
+## ADR-015 — No Print Support on Results Screen
+
+**Decision:** The Results screen has no Print button in V1.
+
+**Reason:** The Export Report feature (Phase 8) produces a markdown file the
+user can open in any text editor and print from there. Adding a dedicated
+print dialog to the Results screen duplicates this value with additional
+complexity. Users who want to print can export first.
+
+**Implications:** The Results screen has two footer actions only:
+"Export Report" and "Start New Session". No print option.

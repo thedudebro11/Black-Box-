@@ -1,0 +1,52 @@
+[
+  {
+    "type": "event",
+    "ts": "2024-01-15T14:23:45.123Z",
+    "source": "System",
+    "provider": "nvlddmkm",
+    "event_id": 153,
+    "level": "Error",
+    "message": "Reset TDR occurred",
+    "collected_at": "2024-01-15T14:24:00.000Z"
+  },
+  {
+    "type": "event",
+    "ts": "2024-01-15T14:23:48.456Z",
+    "source": "System",
+    "provider": "Microsoft-Windows-Kernel-LiveDump",
+    "event_id": 141,
+    "level": "Warning",
+    "message": "LiveKernelEvent: GPU recovery required",
+    "collected_at": "2024-01-15T14:24:00.000Z"
+  },
+  {
+    "type": "event",
+    "ts": "2024-01-15T14:23:55.000Z",
+    "source": "System",
+    "provider": "Microsoft-Windows-FilterManager",
+    "event_id": 1,
+    "level": "Information",
+    "message": "EasyAntiCheat.sys unloaded",
+    "collected_at": "2024-01-15T14:24:00.000Z"
+  },
+  {
+    "type": "event",
+    "ts": "2024-01-15T14:24:01.000Z",
+    "source": "Application",
+    "provider": "Application Error",
+    "event_id": 1000,
+    "level": "Error",
+    "message": "Faulting application name: TheGame.exe, faulting module: GameOverlayRenderer64.dll",
+    "collected_at": "2024-01-15T14:24:10.000Z"
+  },
+  {
+    "type": "event",
+    "ts": "2024-01-15T14:24:05.000Z",
+    "source": "Application",
+    "provider": "Application Hang",
+    "event_id": 1002,
+    "level": "Error",
+    "message": "The program TheGame.exe stopped interacting with Windows",
+    "collected_at": "2024-01-15T14:24:10.000Z"
+  }
+]

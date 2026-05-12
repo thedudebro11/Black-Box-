@@ -1,0 +1,60 @@
+{
+  "_fixture_source": "synthetic",
+  "_fixture_notes": "GPU TDR (Event 153) present but no GPU util data and no game exit detected = MEDIUM confidence",
+  "id": "fixture-gpu-medium-001",
+  "issue_type": "crash",
+  "app_name": "TestGame.exe",
+  "started_at": "2024-01-15T15:00:00.000Z",
+  "stopped_at": "2024-01-15T15:06:00.000Z",
+  "issue_marker_at": "2024-01-15T15:05:30.000Z",
+  "windows": {
+    "baseline_start": "2024-01-15T15:00:00.000Z",
+    "baseline_end":   "2024-01-15T15:04:30.000Z",
+    "incident_start": "2024-01-15T15:04:30.000Z",
+    "incident_end":   "2024-01-15T15:05:30.000Z",
+    "aftermath_start":"2024-01-15T15:05:30.000Z",
+    "aftermath_end":  "2024-01-15T15:07:30.000Z"
+  },
+  "events": [
+    {
+      "type": "event",
+      "ts": "2024-01-15T15:05:10.000Z",
+      "source": "System",
+      "provider": "nvlddmkm",
+      "event_id": 153,
+      "level": "Error",
+      "message": "Reset TDR occurred on GPUID:100",
+      "collected_at": "2024-01-15T15:05:45.000Z"
+    }
+  ],
+  "processes": [
+    {
+      "name": "TestGame.exe",
+      "pid": 7100,
+      "cpu_pct": 38.0,
+      "memory_mb": 3800,
+      "first_seen": "2024-01-15T15:01:00.000Z",
+      "last_seen":  "2024-01-15T15:05:00.000Z",
+      "exit_detected": false
+    }
+  ],
+  "metrics": [
+    {
+      "ts": "2024-01-15T15:04:40.000Z",
+      "cpu_pct": 55.0,
+      "ram_used_mb": 8000,
+      "ram_total_mb": 16384,
+      "ram_pct": 48.8,
+      "disk_latency_ms": 5,
+      "gpu_pct": 65.0,
+      "vram_used_mb": 5000,
+      "vram_total_mb": 8192
+    }
+  ],
+  "hardware": {
+    "gpu_model": "NVIDIA GeForce RTX 3080",
+    "gpu_driver_version": "531.41",
+    "os_version": "Windows 10 22H2",
+    "ram_total_mb": 16384
+  }
+}

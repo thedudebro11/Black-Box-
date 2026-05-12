@@ -3,6 +3,14 @@ import { join } from 'path'
 import { registerRecorderHandlers } from './ipc/recorder'
 import { registerAnalyzerHandlers } from './ipc/analyzer'
 import { registerTelemetryHandlers } from './ipc/telemetry'
+import { registerExportHandlers } from './ipc/export'
+import { registerSessionHandlers } from './ipc/sessions'
+import { registerFollowUpHandlers } from './ipc/follow-up'
+import { registerDevtoolsHandlers } from './ipc/devtools'
+import { checkAndFirePendingFollowUps } from '../src/notifications/follow-up-scheduler'
+import { initDatabase } from '../src/db/schema'
+import { initSettings } from '../src/db/settings'
+import { listSessions, updateSession } from '../src/db/sessions'
 
 function createWindow(): void {
   const win = new BrowserWindow({
@@ -36,10 +44,51 @@ function createWindow(): void {
   }
 }
 
+/**
+ * On startup, find any sessions that were left in 'recording' status —
+ * meaning the app was closed mid-session — and mark them 'interrupted'.
+ * Phase 12 will offer to re-analyze these; for now we just prevent them
+ * from appearing as stuck-in-recording in the history screen.
+ */
+function recoverInterruptedSessions(): void {
+  try {
+    const sessions = listSessions(200)
+    for (const s of sessions) {
+      if (s.status === 'recording') {
+        updateSession(s.id, { status: 'interrupted' })
+        console.log(`[main] marked session ${s.id.slice(-8)} as interrupted (app closed mid-recording)`)
+      }
+    }
+  } catch (err) {
+    console.error('[main] interrupted session recovery failed', err)
+  }
+}
+
+/** Push the follow-up:show event to all renderer windows */
+function notifyFollowUpFired(followUpId: string, sessionId: string): void {
+  for (const win of BrowserWindow.getAllWindows()) {
+    win.webContents.send('follow-up:show', { followUpId, sessionId })
+  }
+}
+
 app.whenReady().then(() => {
+  initDatabase()
+  initSettings(app.getVersion())
+  recoverInterruptedSessions()
+
   registerRecorderHandlers()
   registerAnalyzerHandlers()
   registerTelemetryHandlers()
+  registerExportHandlers()
+  registerSessionHandlers()
+  registerFollowUpHandlers(notifyFollowUpFired)
+
+  if (!app.isPackaged) {
+    registerDevtoolsHandlers()
+  }
+
+  // Fire any follow-ups that became due while the app was closed.
+  checkAndFirePendingFollowUps(notifyFollowUpFired)
 
   createWindow()
 

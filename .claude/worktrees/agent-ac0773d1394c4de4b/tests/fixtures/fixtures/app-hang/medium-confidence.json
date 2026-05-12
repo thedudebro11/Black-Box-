@@ -1,0 +1,60 @@
+{
+  "_fixture_source": "synthetic",
+  "_fixture_notes": "Event 1002 with app name but disk latency is low — no disk I/O bottleneck = MEDIUM confidence",
+  "id": "fixture-apphang-medium-001",
+  "issue_type": "freeze",
+  "app_name": "PuzzleGame.exe",
+  "started_at": "2024-01-19T15:00:00.000Z",
+  "stopped_at": "2024-01-19T15:06:00.000Z",
+  "issue_marker_at": "2024-01-19T15:05:30.000Z",
+  "windows": {
+    "baseline_start": "2024-01-19T15:00:00.000Z",
+    "baseline_end":   "2024-01-19T15:04:30.000Z",
+    "incident_start": "2024-01-19T15:04:30.000Z",
+    "incident_end":   "2024-01-19T15:05:30.000Z",
+    "aftermath_start":"2024-01-19T15:05:30.000Z",
+    "aftermath_end":  "2024-01-19T15:07:30.000Z"
+  },
+  "events": [
+    {
+      "type": "event",
+      "ts": "2024-01-19T15:05:15.000Z",
+      "source": "Application",
+      "provider": "Application Hang",
+      "event_id": 1002,
+      "level": "Error",
+      "message": "The program PuzzleGame.exe stopped interacting with Windows and was closed. Process ID: 4400.",
+      "collected_at": "2024-01-19T15:05:45.000Z"
+    }
+  ],
+  "processes": [
+    {
+      "name": "PuzzleGame.exe",
+      "pid": 4400,
+      "cpu_pct": 99.5,
+      "memory_mb": 2000,
+      "first_seen": "2024-01-19T15:01:00.000Z",
+      "last_seen":  "2024-01-19T15:05:20.000Z",
+      "exit_detected": true
+    }
+  ],
+  "metrics": [
+    {
+      "ts": "2024-01-19T15:05:00.000Z",
+      "cpu_pct": 98.0,
+      "ram_used_mb": 7500,
+      "ram_total_mb": 16384,
+      "ram_pct": 45.8,
+      "disk_latency_ms": 12,
+      "gpu_pct": 10.0,
+      "vram_used_mb": 1500,
+      "vram_total_mb": 8192
+    }
+  ],
+  "hardware": {
+    "gpu_model": "Intel UHD Graphics 730",
+    "gpu_driver_version": "30.0.101.1960",
+    "os_version": "Windows 11 23H2",
+    "ram_total_mb": 16384
+  }
+}

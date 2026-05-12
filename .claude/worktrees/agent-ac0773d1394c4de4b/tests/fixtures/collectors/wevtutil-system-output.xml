@@ -1,0 +1,40 @@
+<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'>
+  <System>
+    <Provider Name='nvlddmkm'/>
+    <EventID>153</EventID>
+    <Level>2</Level>
+    <TimeCreated SystemTime='2024-01-15T14:23:45.123Z'/>
+    <Channel>System</Channel>
+  </System>
+  <EventData><Data>Reset TDR occurred</Data></EventData>
+</Event>
+<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'>
+  <System>
+    <Provider Name='Microsoft-Windows-Kernel-LiveDump'/>
+    <EventID>141</EventID>
+    <Level>3</Level>
+    <TimeCreated SystemTime='2024-01-15T14:23:48.456Z'/>
+    <Channel>System</Channel>
+  </System>
+  <EventData><Data>LiveKernelEvent: GPU recovery required</Data></EventData>
+</Event>
+<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'>
+  <System>
+    <Provider Name='nvlddmkm'/>
+    <EventID>14</EventID>
+    <Level>2</Level>
+    <TimeCreated SystemTime='2024-01-15T14:23:50.789Z'/>
+    <Channel>System</Channel>
+  </System>
+  <EventData><Data>Control channel timeout detected</Data></EventData>
+</Event>
+<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'>
+  <System>
+    <Provider Name='Microsoft-Windows-FilterManager'/>
+    <EventID>1</EventID>
+    <Level>4</Level>
+    <TimeCreated SystemTime='2024-01-15T14:23:55.000Z'/>
+    <Channel>System</Channel>
+  </System>
+  <EventData><Data>EasyAntiCheat.sys unloaded</Data></EventData>
+</Event>

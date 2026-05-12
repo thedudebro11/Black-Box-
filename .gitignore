@@ -5,3 +5,5 @@ dist-electron
 .tsbuild
 *.db
 *.ndjson
+*.mv2
+*.mv2.lock

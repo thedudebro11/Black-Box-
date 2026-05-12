@@ -1,0 +1,60 @@
+{
+  "_fixture_source": "synthetic",
+  "_fixture_notes": "No GPU-related events at all — rule must not fire",
+  "id": "fixture-gpu-nomatch-001",
+  "issue_type": "crash",
+  "app_name": "TestGame.exe",
+  "started_at": "2024-01-15T16:00:00.000Z",
+  "stopped_at": "2024-01-15T16:06:00.000Z",
+  "issue_marker_at": "2024-01-15T16:05:30.000Z",
+  "windows": {
+    "baseline_start": "2024-01-15T16:00:00.000Z",
+    "baseline_end":   "2024-01-15T16:04:30.000Z",
+    "incident_start": "2024-01-15T16:04:30.000Z",
+    "incident_end":   "2024-01-15T16:05:30.000Z",
+    "aftermath_start":"2024-01-15T16:05:30.000Z",
+    "aftermath_end":  "2024-01-15T16:07:30.000Z"
+  },
+  "events": [
+    {
+      "type": "event",
+      "ts": "2024-01-15T16:05:00.000Z",
+      "source": "Application",
+      "provider": "Application Error",
+      "event_id": 1000,
+      "level": "Error",
+      "message": "Faulting application name: TestGame.exe, faulting module: kernel32.dll, exception code: 0xc0000005",
+      "collected_at": "2024-01-15T16:05:45.000Z"
+    }
+  ],
+  "processes": [
+    {
+      "name": "TestGame.exe",
+      "pid": 5500,
+      "cpu_pct": 40.0,
+      "memory_mb": 3200,
+      "first_seen": "2024-01-15T16:01:00.000Z",
+      "last_seen":  "2024-01-15T16:05:30.000Z",
+      "exit_detected": true
+    }
+  ],
+  "metrics": [
+    {
+      "ts": "2024-01-15T16:04:50.000Z",
+      "cpu_pct": 50.0,
+      "ram_used_mb": 7000,
+      "ram_total_mb": 16384,
+      "ram_pct": 42.7,
+      "disk_latency_ms": 10,
+      "gpu_pct": 55.0,
+      "vram_used_mb": 4000,
+      "vram_total_mb": 8192
+    }
+  ],
+  "hardware": {
+    "gpu_model": "NVIDIA GeForce RTX 3070",
+    "gpu_driver_version": "528.24",
+    "os_version": "Windows 11 22H2",
+    "ram_total_mb": 16384
+  }
+}

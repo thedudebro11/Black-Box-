@@ -1,0 +1,87 @@
+{
+  "_fixture_source": "synthetic",
+  "_fixture_notes": "Silent crash + overlay DLL in Event 1000 faulting module + 3 overlay processes active = HIGH confidence",
+  "id": "fixture-overlay-high-001",
+  "issue_type": "crash",
+  "app_name": "TestGame.exe",
+  "started_at": "2024-01-16T10:00:00.000Z",
+  "stopped_at": "2024-01-16T10:06:00.000Z",
+  "issue_marker_at": "2024-01-16T10:05:30.000Z",
+  "windows": {
+    "baseline_start": "2024-01-16T10:00:00.000Z",
+    "baseline_end":   "2024-01-16T10:04:30.000Z",
+    "incident_start": "2024-01-16T10:04:30.000Z",
+    "incident_end":   "2024-01-16T10:05:30.000Z",
+    "aftermath_start":"2024-01-16T10:05:30.000Z",
+    "aftermath_end":  "2024-01-16T10:07:30.000Z"
+  },
+  "events": [
+    {
+      "type": "event",
+      "ts": "2024-01-16T10:05:28.000Z",
+      "source": "Application",
+      "provider": "Application Error",
+      "event_id": 1000,
+      "level": "Error",
+      "message": "Faulting application name: TestGame.exe, faulting module: GameOverlayRenderer64.dll, exception code: 0xc0000005",
+      "collected_at": "2024-01-16T10:05:45.000Z"
+    }
+  ],
+  "processes": [
+    {
+      "name": "TestGame.exe",
+      "pid": 6100,
+      "cpu_pct": 50.0,
+      "memory_mb": 4000,
+      "first_seen": "2024-01-16T10:01:00.000Z",
+      "last_seen":  "2024-01-16T10:05:29.000Z",
+      "exit_detected": true
+    },
+    {
+      "name": "Discord.exe",
+      "pid": 3200,
+      "cpu_pct": 1.5,
+      "memory_mb": 280,
+      "first_seen": "2024-01-16T10:00:00.000Z",
+      "last_seen":  "2024-01-16T10:06:00.000Z",
+      "exit_detected": false
+    },
+    {
+      "name": "GameOverlayUI.exe",
+      "pid": 3310,
+      "cpu_pct": 0.8,
+      "memory_mb": 120,
+      "first_seen": "2024-01-16T10:00:00.000Z",
+      "last_seen":  "2024-01-16T10:06:00.000Z",
+      "exit_detected": false
+    },
+    {
+      "name": "MSIAfterburner.exe",
+      "pid": 4200,
+      "cpu_pct": 0.3,
+      "memory_mb": 80,
+      "first_seen": "2024-01-16T10:00:00.000Z",
+      "last_seen":  "2024-01-16T10:06:00.000Z",
+      "exit_detected": false
+    }
+  ],
+  "metrics": [
+    {
+      "ts": "2024-01-16T10:05:00.000Z",
+      "cpu_pct": 55.0,
+      "ram_used_mb": 9000,
+      "ram_total_mb": 16384,
+      "ram_pct": 54.9,
+      "disk_latency_ms": 9,
+      "gpu_pct": 72.0,
+      "vram_used_mb": 5500,
+      "vram_total_mb": 8192
+    }
+  ],
+  "hardware": {
+    "gpu_model": "NVIDIA GeForce RTX 3080",
+    "gpu_driver_version": "537.58",
+    "os_version": "Windows 11 23H2",
+    "ram_total_mb": 16384
+  }
+}

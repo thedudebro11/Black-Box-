@@ -1,0 +1,67 @@
+{
+  "_fixture_source": "synthetic",
+  "_fixture_notes": "Silent crash (no Event 1000) + 2 overlay processes active = MEDIUM confidence",
+  "id": "fixture-overlay-medium-001",
+  "issue_type": "crash",
+  "app_name": "TestGame.exe",
+  "started_at": "2024-01-16T11:00:00.000Z",
+  "stopped_at": "2024-01-16T11:06:00.000Z",
+  "issue_marker_at": "2024-01-16T11:05:30.000Z",
+  "windows": {
+    "baseline_start": "2024-01-16T11:00:00.000Z",
+    "baseline_end":   "2024-01-16T11:04:30.000Z",
+    "incident_start": "2024-01-16T11:04:30.000Z",
+    "incident_end":   "2024-01-16T11:05:30.000Z",
+    "aftermath_start":"2024-01-16T11:05:30.000Z",
+    "aftermath_end":  "2024-01-16T11:07:30.000Z"
+  },
+  "events": [],
+  "processes": [
+    {
+      "name": "TestGame.exe",
+      "pid": 6200,
+      "cpu_pct": 48.0,
+      "memory_mb": 3900,
+      "first_seen": "2024-01-16T11:01:00.000Z",
+      "last_seen":  "2024-01-16T11:05:28.000Z",
+      "exit_detected": true
+    },
+    {
+      "name": "Discord.exe",
+      "pid": 3300,
+      "cpu_pct": 1.2,
+      "memory_mb": 270,
+      "first_seen": "2024-01-16T11:00:00.000Z",
+      "last_seen":  "2024-01-16T11:06:00.000Z",
+      "exit_detected": false
+    },
+    {
+      "name": "steam.exe",
+      "pid": 2100,
+      "cpu_pct": 0.5,
+      "memory_mb": 220,
+      "first_seen": "2024-01-16T11:00:00.000Z",
+      "last_seen":  "2024-01-16T11:06:00.000Z",
+      "exit_detected": false
+    }
+  ],
+  "metrics": [
+    {
+      "ts": "2024-01-16T11:05:00.000Z",
+      "cpu_pct": 52.0,
+      "ram_used_mb": 8800,
+      "ram_total_mb": 16384,
+      "ram_pct": 53.7,
+      "disk_latency_ms": 7,
+      "gpu_pct": 68.0,
+      "vram_used_mb": 5200,
+      "vram_total_mb": 8192
+    }
+  ],
+  "hardware": {
+    "gpu_model": "NVIDIA GeForce RTX 3070",
+    "gpu_driver_version": "531.41",
+    "os_version": "Windows 10 22H2",
+    "ram_total_mb": 16384
+  }
+}

@@ -5,6 +5,10 @@ This is the master context file for the Black Box project. Read this entire file
 any code, generating any documentation, or making any architectural decisions. Every decision
 made in every session must be consistent with what is defined here.
 
+**Related docs:**
+- `docs/PHASES.md` — build phases and current status
+- `docs/V2-ROADMAP.md` — V2 feature vision (do not build any of this in V1)
+
 ---
 
 ## What Black Box Is

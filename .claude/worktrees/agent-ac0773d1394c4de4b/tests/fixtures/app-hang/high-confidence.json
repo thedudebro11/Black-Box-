@@ -1,0 +1,82 @@
+{
+  "_fixture_source": "synthetic",
+  "_fixture_notes": "Event 1002 with app name + disk latency > 500ms in incident window = HIGH confidence",
+  "id": "fixture-apphang-high-001",
+  "issue_type": "app_hang",
+  "app_name": "StreamingGame.exe",
+  "started_at": "2024-01-19T14:00:00.000Z",
+  "stopped_at": "2024-01-19T14:06:00.000Z",
+  "issue_marker_at": "2024-01-19T14:05:30.000Z",
+  "windows": {
+    "baseline_start": "2024-01-19T14:00:00.000Z",
+    "baseline_end":   "2024-01-19T14:04:30.000Z",
+    "incident_start": "2024-01-19T14:04:30.000Z",
+    "incident_end":   "2024-01-19T14:05:30.000Z",
+    "aftermath_start":"2024-01-19T14:05:30.000Z",
+    "aftermath_end":  "2024-01-19T14:07:30.000Z"
+  },
+  "events": [
+    {
+      "type": "event",
+      "ts": "2024-01-19T14:05:20.000Z",
+      "source": "Application",
+      "provider": "Application Hang",
+      "event_id": 1002,
+      "level": "Error",
+      "message": "The program StreamingGame.exe stopped interacting with Windows and was closed. To see if more information about the problem is available, check the problem history in the Security and Maintenance control panel. Process ID: 8800. Start Time: 01da1234abcdef01. Termination Time: 60000 ms. Application Path: C:\\Games\\StreamingGame\\StreamingGame.exe.",
+      "collected_at": "2024-01-19T14:05:45.000Z"
+    }
+  ],
+  "processes": [
+    {
+      "name": "StreamingGame.exe",
+      "pid": 8800,
+      "cpu_pct": 15.0,
+      "memory_mb": 4500,
+      "first_seen": "2024-01-19T14:01:00.000Z",
+      "last_seen":  "2024-01-19T14:05:25.000Z",
+      "exit_detected": true
+    }
+  ],
+  "metrics": [
+    {
+      "ts": "2024-01-19T14:04:40.000Z",
+      "cpu_pct": 20.0,
+      "ram_used_mb": 9000,
+      "ram_total_mb": 16384,
+      "ram_pct": 54.9,
+      "disk_latency_ms": 620,
+      "gpu_pct": 40.0,
+      "vram_used_mb": 3500,
+      "vram_total_mb": 8192
+    },
+    {
+      "ts": "2024-01-19T14:05:00.000Z",
+      "cpu_pct": 18.0,
+      "ram_used_mb": 9100,
+      "ram_total_mb": 16384,
+      "ram_pct": 55.5,
+      "disk_latency_ms": 780,
+      "gpu_pct": 38.0,
+      "vram_used_mb": 3500,
+      "vram_total_mb": 8192
+    },
+    {
+      "ts": "2024-01-19T14:05:20.000Z",
+      "cpu_pct": 5.0,
+      "ram_used_mb": 9050,
+      "ram_total_mb": 16384,
+      "ram_pct": 55.2,
+      "disk_latency_ms": 950,
+      "gpu_pct": 5.0,
+      "vram_used_mb": 3500,
+      "vram_total_mb": 8192
+    }
+  ],
+  "hardware": {
+    "gpu_model": "AMD Radeon RX 6600",
+    "gpu_driver_version": "23.7.2",
+    "os_version": "Windows 11 23H2",
+    "ram_total_mb": 16384
+  }
+}

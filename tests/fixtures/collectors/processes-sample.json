@@ -1,0 +1,35 @@
+{
+  "ts": "2024-01-15T14:23:40.000Z",
+  "processes": [
+    {
+      "name": "Discord.exe",
+      "pid": 4821,
+      "cpu_pct": 1.2,
+      "memory_mb": 284.5
+    },
+    {
+      "name": "steam.exe",
+      "pid": 3200,
+      "cpu_pct": 0.8,
+      "memory_mb": 412.0
+    },
+    {
+      "name": "EasyAntiCheat.exe",
+      "pid": 5100,
+      "cpu_pct": 0.1,
+      "memory_mb": 18.3
+    },
+    {
+      "name": "TheGame.exe",
+      "pid": 7640,
+      "cpu_pct": 45.2,
+      "memory_mb": 6144.0
+    },
+    {
+      "name": "GameOverlayUI.exe",
+      "pid": 3456,
+      "cpu_pct": 0.3,
+      "memory_mb": 92.1
+    }
+  ]
+}

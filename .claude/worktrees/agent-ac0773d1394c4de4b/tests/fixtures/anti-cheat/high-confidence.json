@@ -1,0 +1,79 @@
+{
+  "_fixture_source": "synthetic",
+  "_fixture_notes": "EAC exits before game + FilterManager Event 1 + Event 1000 with 0xC0000005 = HIGH confidence",
+  "id": "fixture-anticheat-high-001",
+  "issue_type": "crash",
+  "app_name": "CompetitiveGame.exe",
+  "started_at": "2024-01-17T09:00:00.000Z",
+  "stopped_at": "2024-01-17T09:06:00.000Z",
+  "issue_marker_at": "2024-01-17T09:05:30.000Z",
+  "windows": {
+    "baseline_start": "2024-01-17T09:00:00.000Z",
+    "baseline_end":   "2024-01-17T09:04:30.000Z",
+    "incident_start": "2024-01-17T09:04:30.000Z",
+    "incident_end":   "2024-01-17T09:05:30.000Z",
+    "aftermath_start":"2024-01-17T09:05:30.000Z",
+    "aftermath_end":  "2024-01-17T09:07:30.000Z"
+  },
+  "events": [
+    {
+      "type": "event",
+      "ts": "2024-01-17T09:05:05.000Z",
+      "source": "System",
+      "provider": "Microsoft-Windows-FilterManager",
+      "event_id": 1,
+      "level": "Error",
+      "message": "File System Filter 'EasyAntiCheat' (version 3.0) unloaded successfully.",
+      "collected_at": "2024-01-17T09:05:45.000Z"
+    },
+    {
+      "type": "event",
+      "ts": "2024-01-17T09:05:10.000Z",
+      "source": "Application",
+      "provider": "Application Error",
+      "event_id": 1000,
+      "level": "Error",
+      "message": "Faulting application name: EasyAntiCheat.exe, faulting module: EasyAntiCheat.exe, exception code: 0xC0000005",
+      "collected_at": "2024-01-17T09:05:45.000Z"
+    }
+  ],
+  "processes": [
+    {
+      "name": "CompetitiveGame.exe",
+      "pid": 8800,
+      "cpu_pct": 60.0,
+      "memory_mb": 5000,
+      "first_seen": "2024-01-17T09:01:00.000Z",
+      "last_seen":  "2024-01-17T09:05:25.000Z",
+      "exit_detected": true
+    },
+    {
+      "name": "EasyAntiCheat.exe",
+      "pid": 2400,
+      "cpu_pct": 0.5,
+      "memory_mb": 40,
+      "first_seen": "2024-01-17T09:01:00.000Z",
+      "last_seen":  "2024-01-17T09:05:02.000Z",
+      "exit_detected": true
+    }
+  ],
+  "metrics": [
+    {
+      "ts": "2024-01-17T09:05:00.000Z",
+      "cpu_pct": 62.0,
+      "ram_used_mb": 10500,
+      "ram_total_mb": 16384,
+      "ram_pct": 64.1,
+      "disk_latency_ms": 9,
+      "gpu_pct": 78.0,
+      "vram_used_mb": 5800,
+      "vram_total_mb": 8192
+    }
+  ],
+  "hardware": {
+    "gpu_model": "NVIDIA GeForce RTX 3060",
+    "gpu_driver_version": "528.24",
+    "os_version": "Windows 11 23H2",
+    "ram_total_mb": 16384
+  }
+}

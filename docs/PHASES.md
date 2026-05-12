@@ -477,14 +477,14 @@ Update this section at the end of each session.
 | Phase | Status | Last Updated | Notes |
 |-------|--------|-------------|-------|
 | 1 — Scaffold | COMPLETE | 2026-04-27 | electron-vite build passes, all types clean, all folders created |
-| 2 — Data Layer | NOT STARTED | — | |
-| 3 — Collectors | NOT STARTED | — | |
-| 4 — Rules Engine | NOT STARTED | — | |
-| 5 — Analysis Pipeline | NOT STARTED | — | |
-| 6 — UI Core | NOT STARTED | — | |
-| 7 — Results Screen | NOT STARTED | — | |
-| 8 — Report Export | NOT STARTED | — | |
-| 9 — Telemetry | NOT STARTED | — | |
-| 10 — Follow-Up | NOT STARTED | — | |
-| 11 — History | NOT STARTED | — | |
+| 2 — Data Layer | COMPLETE | 2026-05-11 | better-sqlite3, all tables, CRUD, 16/16 tests passing |
+| 3 — Collectors | COMPLETE | 2026-05-12 | wevtutil.exe primary, systeminformation metrics, 29/29 tests |
+| 4 — Rules Engine | COMPLETE | 2026-05-12 | All 5 rule packs, scorer, analyzer, 15 fixtures, 7 test files |
+| 5 — Analysis Pipeline | COMPLETE | 2026-05-12 | trace-writer, parser, session-manager, real IPC handlers, 120/120 tests |
+| 6 — UI Core | COMPLETE | 2026-05-12 | Welcome/Describe/Record/Analyzing wired to real IPC, Zustand store expanded |
+| 7 — Results Screen | COMPLETE | 2026-05-12 | 4 outcome states, evidence list, fix steps, secondary causes, confidence badges |
+| 8 — Report Export | COMPLETE | 2026-05-12 | report-generator.ts, export IPC handler, save dialog, 32 tests |
+| 9 — Telemetry | COMPLETE | 2026-05-12 | sanitizer.ts, uploader.ts, TelemetryOptIn modal, settings IPC, 20 tests |
+| 10 — Follow-Up | COMPLETE | 2026-05-12 | follow-up-scheduler, FollowUpModal, IPC handlers, 7 tests |
+| 11 — History | COMPLETE | 2026-05-12 | History screen, sessions IPC handlers, delete with confirm, 11 tests |
 | 12 — Integration | NOT STARTED | — | |

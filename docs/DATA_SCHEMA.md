@@ -41,6 +41,7 @@ CREATE TABLE sessions (
   issue_marker_at   TEXT,              -- ISO 8601, null if user never pressed marker
   analyzed_at       TEXT,              -- ISO 8601, null until analysis completes
   trace_file_path   TEXT,              -- path to NDJSON trace file
+  trace_truncated   INTEGER DEFAULT 0, -- 1 if trace hit 50MB cap (ADR-014)
   created_at        TEXT NOT NULL,
   updated_at        TEXT NOT NULL
 );

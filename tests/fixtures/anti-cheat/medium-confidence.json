@@ -1,0 +1,69 @@
+{
+  "_fixture_source": "synthetic",
+  "_fixture_notes": "BEService exits before game + Event 1000 with non-zero exit code but no FilterManager event = MEDIUM confidence",
+  "id": "fixture-anticheat-medium-001",
+  "issue_type": "crash",
+  "app_name": "BattlefieldGame.exe",
+  "started_at": "2024-01-17T10:00:00.000Z",
+  "stopped_at": "2024-01-17T10:06:00.000Z",
+  "issue_marker_at": "2024-01-17T10:05:30.000Z",
+  "windows": {
+    "baseline_start": "2024-01-17T10:00:00.000Z",
+    "baseline_end":   "2024-01-17T10:04:30.000Z",
+    "incident_start": "2024-01-17T10:04:30.000Z",
+    "incident_end":   "2024-01-17T10:05:30.000Z",
+    "aftermath_start":"2024-01-17T10:05:30.000Z",
+    "aftermath_end":  "2024-01-17T10:07:30.000Z"
+  },
+  "events": [
+    {
+      "type": "event",
+      "ts": "2024-01-17T10:05:08.000Z",
+      "source": "Application",
+      "provider": "Application Error",
+      "event_id": 1000,
+      "level": "Error",
+      "message": "Faulting application name: BEService.exe, exception code: 0xC0000034, BattlEye service crashed",
+      "collected_at": "2024-01-17T10:05:45.000Z"
+    }
+  ],
+  "processes": [
+    {
+      "name": "BattlefieldGame.exe",
+      "pid": 9100,
+      "cpu_pct": 58.0,
+      "memory_mb": 4800,
+      "first_seen": "2024-01-17T10:01:00.000Z",
+      "last_seen":  "2024-01-17T10:05:22.000Z",
+      "exit_detected": true
+    },
+    {
+      "name": "BEService.exe",
+      "pid": 2700,
+      "cpu_pct": 0.4,
+      "memory_mb": 35,
+      "first_seen": "2024-01-17T10:01:00.000Z",
+      "last_seen":  "2024-01-17T10:05:05.000Z",
+      "exit_detected": true
+    }
+  ],
+  "metrics": [
+    {
+      "ts": "2024-01-17T10:05:00.000Z",
+      "cpu_pct": 58.0,
+      "ram_used_mb": 10000,
+      "ram_total_mb": 16384,
+      "ram_pct": 61.0,
+      "disk_latency_ms": 10,
+      "gpu_pct": 75.0,
+      "vram_used_mb": 5600,
+      "vram_total_mb": 8192
+    }
+  ],
+  "hardware": {
+    "gpu_model": "AMD Radeon RX 6800 XT",
+    "gpu_driver_version": "23.9.1",
+    "os_version": "Windows 10 22H2",
+    "ram_total_mb": 16384
+  }
+}
