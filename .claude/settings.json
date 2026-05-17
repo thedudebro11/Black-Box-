@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(npx ecc-agentshield *)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(curl * | *)",
+      "Bash(wget * | *)",
+      "Bash(sudo *)",
+      "Bash(chmod 777 *)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(git reset --hard *)",
+      "Bash(git clean -f *)",
+      "Bash(npx * | sh)",
+      "Bash(npx * | bash)",
+      "Bash(ssh *)",
+      "Bash(scp *)",
+      "Bash(* > /dev/*)",
+      "Bash(dd *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'cmd=\"$CLAUDE_TOOL_INPUT_COMMAND\"; if echo \"$cmd\" | grep -qE \"(eval|base64 -d.*\\|.*sh|\\$\\(curl|\\$\\(wget)\"; then echo \"[Security] Blocked: potential command injection pattern detected\"; exit 2; fi'"
+          }
+        ]
+      }
+    ]
+  }
+}
