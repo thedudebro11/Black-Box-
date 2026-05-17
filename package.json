@@ -33,8 +33,8 @@
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.19",
     "electron": "^30.0.1",
-    "electron-vite": "^2.1.0",
     "electron-rebuild": "^3.2.9",
+    "electron-vite": "^2.1.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.6",
@@ -43,5 +43,8 @@
     "tailwindcss": "^3.4.3",
     "typescript": "^5.4.5",
     "vitest": "^1.5.0"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.60.4"
   }
 }

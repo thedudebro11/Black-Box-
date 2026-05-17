@@ -5,6 +5,7 @@ import { createSession, updateSession } from '../../src/db/sessions'
 import { createAnalysisResult } from '../../src/db/analysis'
 import { analyzeSession } from '../../src/engine/analyzer'
 import type { IssueType } from '../../src/types/global'
+import type { ParsedSession } from '../../src/engine/types'
 
 type Scenario = 'gpu-driver' | 'memory-exhaustion' | 'app-hang'
 
@@ -14,7 +15,7 @@ const SCENARIO_META: Record<Scenario, { appName: string; issueType: IssueType }>
   'app-hang':          { appName: 'MyApp.exe',     issueType: 'app_hang' },
 }
 
-function buildParsedSession(scenario: Scenario, sessionId: string) {
+function buildParsedSession(scenario: Scenario, sessionId: string): ParsedSession {
   const T = Date.now()
   const iso = (ms: number) => new Date(ms).toISOString()
 
@@ -180,8 +181,7 @@ export function registerDevtoolsHandlers(): void {
         issue_marker_at: now,
       })
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const parsed = buildParsedSession(scenario as Scenario, session.id) as any
+      const parsed = buildParsedSession(scenario as Scenario, session.id)
       const engineResult = analyzeSession(parsed)
 
       const dbResult = createAnalysisResult({

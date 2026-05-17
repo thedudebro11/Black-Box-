@@ -6,7 +6,7 @@ let db: Database.Database | null = null
 
 function resolveDbPath(): string {
   if (process.env['VITEST']) return ':memory:'
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { app } = require('electron') as typeof import('electron')
   const userDataPath = app.getPath('userData')
   mkdirSync(userDataPath, { recursive: true })
@@ -17,7 +17,7 @@ function getMigrationsDir(): string {
   if (process.env['VITEST']) {
     return join(process.cwd(), 'src', 'db', 'migrations')
   }
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { app } = require('electron') as typeof import('electron')
   return app.isPackaged
     ? join(process.resourcesPath, 'migrations')
