@@ -487,4 +487,4 @@ Update this section at the end of each session.
 | 9 — Telemetry | COMPLETE | 2026-05-12 | sanitizer.ts, uploader.ts, TelemetryOptIn modal, settings IPC, 20 tests |
 | 10 — Follow-Up | COMPLETE | 2026-05-12 | follow-up-scheduler, FollowUpModal, IPC handlers, 7 tests |
 | 11 — History | COMPLETE | 2026-05-12 | History screen, sessions IPC handlers, delete with confirm, 11 tests |
-| 12 — Integration | NOT STARTED | — | |
+| 12 — Integration | COMPLETE | 2026-05-17 | Settings+About screen, Export wired, interrupted session recovery, tray icon (needs icon.png), electron-builder NSIS config, 190/190 tests |

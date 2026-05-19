@@ -20,12 +20,12 @@ export interface Session {
   issue_type: IssueType
   app_name: string
   description: string | null
-  started_at: string        // ISO 8601
+  started_at: string // ISO 8601
   stopped_at: string | null
   issue_marker_at: string | null
   analyzed_at: string | null
   trace_file_path: string | null
-  trace_truncated: boolean  // true if trace hit the 50MB cap (ADR-014)
+  trace_truncated: boolean // true if trace hit the 50MB cap (ADR-014)
   created_at: string
   updated_at: string
 }
@@ -42,7 +42,7 @@ export interface FollowUp {
   session_id: string
   scheduled_for: string
   sent_at: string | null
-  response: string | null   // 'yes' | 'no' | 'still_working'
+  response: string | null // 'yes' | 'no' | 'still_working'
   resolution_notes: string | null
   uploaded: boolean
   expires_at: string
@@ -144,13 +144,16 @@ export interface ElectronAPI {
   }
   export: {
     saveReport: (payload: { markdown: string; filename: string }) => Promise<{
-      success: boolean
-      filePath: string | null
+      ok: boolean
+      filePath?: string
+      error?: string
     }>
   }
   sessions: {
     list: () => Promise<Session[]>
-    getWithResult: (sessionId: string) => Promise<{ session: Session; result: AnalysisResult | null } | null>
+    getWithResult: (
+      sessionId: string
+    ) => Promise<{ session: Session; result: AnalysisResult | null } | null>
     delete: (sessionId: string) => Promise<{ ok: boolean; error?: string }>
   }
   devtools?: {

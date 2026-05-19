@@ -1,5 +1,6 @@
-import { app, BrowserWindow, shell } from 'electron'
+import { app, BrowserWindow, shell, Tray, Menu, nativeImage } from 'electron'
 import { join } from 'path'
+import { existsSync } from 'fs'
 import { registerRecorderHandlers } from './ipc/recorder'
 import { registerAnalyzerHandlers } from './ipc/analyzer'
 import { registerTelemetryHandlers } from './ipc/telemetry'
@@ -12,7 +13,7 @@ import { initDatabase } from '../src/db/schema'
 import { initSettings } from '../src/db/settings'
 import { listSessions, updateSession } from '../src/db/sessions'
 
-function createWindow(): void {
+function createWindow(): BrowserWindow {
   const win = new BrowserWindow({
     width: 1100,
     height: 700,
@@ -42,6 +43,8 @@ function createWindow(): void {
   } else {
     win.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  return win
 }
 
 /**
@@ -56,12 +59,57 @@ function recoverInterruptedSessions(): void {
     for (const s of sessions) {
       if (s.status === 'recording') {
         updateSession(s.id, { status: 'interrupted' })
-        console.log(`[main] marked session ${s.id.slice(-8)} as interrupted (app closed mid-recording)`)
+        console.log(
+          `[main] marked session ${s.id.slice(-8)} as interrupted (app closed mid-recording)`
+        )
       }
     }
   } catch (err) {
     console.error('[main] interrupted session recovery failed', err)
   }
+}
+
+let tray: Tray | null = null
+
+function createTray(win: BrowserWindow): void {
+  const iconPath = app.isPackaged
+    ? join(process.resourcesPath, 'icon.png')
+    : join(__dirname, '../../resources/icon.png')
+
+  if (!existsSync(iconPath)) {
+    console.warn(
+      '[tray] icon not found at',
+      iconPath,
+      '— skipping tray (add resources/icon.png to enable)'
+    )
+    return
+  }
+
+  const icon = nativeImage.createFromPath(iconPath).resize({ width: 16, height: 16 })
+  tray = new Tray(icon)
+  tray.setToolTip('Black Box')
+
+  const menu = Menu.buildFromTemplate([
+    {
+      label: 'Show Black Box',
+      click: () => {
+        win.show()
+        win.focus()
+      },
+    },
+    { type: 'separator' },
+    {
+      label: 'Quit',
+      click: () => app.quit(),
+    },
+  ])
+
+  tray.setContextMenu(menu)
+
+  tray.on('double-click', () => {
+    win.show()
+    win.focus()
+  })
 }
 
 /** Push the follow-up:show event to all renderer windows */
@@ -90,7 +138,8 @@ app.whenReady().then(() => {
   // Fire any follow-ups that became due while the app was closed.
   checkAndFirePendingFollowUps(notifyFollowUpFired)
 
-  createWindow()
+  const win = createWindow()
+  createTray(win)
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()

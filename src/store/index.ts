@@ -1,7 +1,20 @@
 import { create } from 'zustand'
-import type { IssueType, AnalysisResult, AnalyzerPhase, LiveMetricsSample, Session } from '../types/global'
+import type {
+  IssueType,
+  AnalysisResult,
+  AnalyzerPhase,
+  LiveMetricsSample,
+  Session,
+} from '../types/global'
 
-export type Screen = 'welcome' | 'describe' | 'record' | 'analyzing' | 'results' | 'history'
+export type Screen =
+  | 'welcome'
+  | 'describe'
+  | 'record'
+  | 'analyzing'
+  | 'results'
+  | 'history'
+  | 'settings'
 
 interface AppState {
   // ── Navigation ──────────────────────────────────────────────────────────────

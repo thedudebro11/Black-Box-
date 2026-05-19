@@ -1,28 +1,37 @@
 import { useState } from 'react'
 import {
-  BarChart2, ChevronDown, ChevronUp, Download, RotateCcw,
-  AlertTriangle, HelpCircle, ExternalLink, ArrowLeft,
+  BarChart2,
+  ChevronDown,
+  ChevronUp,
+  Download,
+  RotateCcw,
+  AlertTriangle,
+  HelpCircle,
+  ExternalLink,
+  ArrowLeft,
+  Loader,
 } from 'lucide-react'
 import { useStore } from '../store'
 import type { Confidence, SignalMatch, FixStep, RuleResult } from '../types/global'
+import { generateReport } from '../export/report-generator'
 
 // ── Cause name lookup ──────────────────────────────────────────────────────────
 
 const CAUSE_NAMES: Record<string, string> = {
-  'gpu-driver':        'GPU Driver Instability / TDR',
-  'overlay-conflict':  'Overlay Conflict',
-  'anti-cheat':        'Anti-Cheat Conflict',
+  'gpu-driver': 'GPU Driver Instability / TDR',
+  'overlay-conflict': 'Overlay Conflict',
+  'anti-cheat': 'Anti-Cheat Conflict',
   'memory-exhaustion': 'Memory Exhaustion',
-  'app-hang':          'App Hang / Freeze',
+  'app-hang': 'App Hang / Freeze',
 }
 
 // ── Confidence badge ───────────────────────────────────────────────────────────
 
 function ConfidenceBadge({ confidence }: { confidence: Confidence | null }) {
   const styles: Record<string, string> = {
-    HIGH:   'bg-confidence-high/15 text-confidence-high border-confidence-high/30',
+    HIGH: 'bg-confidence-high/15 text-confidence-high border-confidence-high/30',
     MEDIUM: 'bg-confidence-medium/15 text-confidence-medium border-confidence-medium/30',
-    LOW:    'bg-confidence-low/15 text-confidence-low border-confidence-low/30',
+    LOW: 'bg-confidence-low/15 text-confidence-low border-confidence-low/30',
   }
   const label = confidence ?? 'INCONCLUSIVE'
   const cls = confidence ? styles[confidence] : styles['LOW']
@@ -67,9 +76,7 @@ function EvidenceList({ signals }: { signals: SignalMatch[] }) {
           <div className="text-secondary text-xs leading-relaxed">{sig.description}</div>
           <div className="text-secondary/50 text-xs font-mono mt-1">
             {formatRelativeTime(sig.seconds_before_marker)}
-            {sig.window !== 'incident' && (
-              <span className="ml-2 opacity-60">({sig.window})</span>
-            )}
+            {sig.window !== 'incident' && <span className="ml-2 opacity-60">({sig.window})</span>}
           </div>
         </div>
       ))}
@@ -148,9 +155,38 @@ function SecondaryResult({ result }: { result: RuleResult }) {
 // ── Main Results screen ────────────────────────────────────────────────────────
 
 export default function Results() {
-  const { navigate, resetSession, analysisResult, viewingHistoricResult, setViewingHistoricResult } =
-    useStore()
+  const {
+    navigate,
+    resetSession,
+    analysisResult,
+    viewingHistoricResult,
+    setViewingHistoricResult,
+  } = useStore()
   const [secondaryOpen, setSecondaryOpen] = useState(false)
+  const [exporting, setExporting] = useState(false)
+
+  async function handleExport() {
+    if (!analysisResult || exporting) return
+    setExporting(true)
+    try {
+      const data = await window.electron.sessions.getWithResult(analysisResult.session_id)
+      const session = data?.session
+      const report = generateReport(analysisResult, {
+        appName: session?.app_name ?? 'Unknown',
+        issueType: session?.issue_type ?? 'crash',
+        sessionId: analysisResult.session_id,
+        startedAt: session?.started_at ?? new Date().toISOString(),
+      })
+      await window.electron.export.saveReport({
+        markdown: report.markdown,
+        filename: report.filename,
+      })
+    } catch (err) {
+      console.error('[results] export failed', err)
+    } finally {
+      setExporting(false)
+    }
+  }
 
   function handleNewSession() {
     resetSession()
@@ -190,8 +226,16 @@ export default function Results() {
     )
   }
 
-  const { outcome, primary_confidence, primary_cause_name, primary_output_text,
-          secondary_results, all_signals_found, fix_recommendations, inconclusive_reason } = analysisResult
+  const {
+    outcome,
+    primary_confidence,
+    primary_cause_name,
+    primary_output_text,
+    secondary_results,
+    all_signals_found,
+    fix_recommendations,
+    inconclusive_reason,
+  } = analysisResult
 
   // ── Error outcome ────────────────────────────────────────────────────────────
   if (outcome === 'error') {
@@ -224,8 +268,8 @@ export default function Results() {
             {inconclusive_reason ?? 'An unexpected error occurred during analysis.'}
           </p>
           <p className="text-secondary/60 text-xs">
-            The session data has been saved. You can export the raw session report to share
-            with a support channel.
+            The session data has been saved. You can export the raw session report to share with a
+            support channel.
           </p>
         </div>
         <div className="mt-6 flex gap-3">
@@ -292,7 +336,7 @@ export default function Results() {
           <p className="text-secondary text-sm leading-relaxed mb-4">
             {inconclusive_reason ??
               "Black Box couldn't identify the cause with enough confidence to recommend a specific fix. " +
-              "Here's what was found — you can take this report to a forum or support channel for additional help."}
+                "Here's what was found — you can take this report to a forum or support channel for additional help."}
           </p>
           {all_signals_found.length > 0 && (
             <div className="border-t border-app-border pt-4">
@@ -326,11 +370,12 @@ export default function Results() {
             </button>
           )}
           <button
-            disabled
-            className="flex items-center gap-2 border border-app-border text-secondary/50 text-sm font-medium px-4 py-2.5 rounded cursor-not-allowed"
-            title="Export available in a future update"
+            onClick={handleExport}
+            disabled={exporting}
+            className="flex items-center gap-2 border border-app-border text-secondary hover:text-primary hover:border-accent/40 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium px-4 py-2.5 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-accent/30"
           >
-            <Download size={14} /> Export Report
+            {exporting ? <Loader size={14} className="animate-spin" /> : <Download size={14} />}
+            {exporting ? 'Exporting…' : 'Export Report'}
           </button>
         </div>
       </div>
